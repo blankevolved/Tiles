@@ -6,7 +6,7 @@ We recommend learning about these core things before you delve deeper
 > 
 > ***[Grid](Grid.md)***  
 > ***[Tile](Tile.md)***  
-> ***[Variables](Variables.md)***
+> ***[Variables](Variables.md)***  
 > ***[Clear](clear.md)***
 
 
