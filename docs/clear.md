@@ -1,5 +1,5 @@
 # Clear
-Use this method to clear the screen as shown in [example.py](../example.py)
+Use this method to clear the screen as shown in [Examples](../examples/move_loop_example.py)
 ```py
 from tiles import Grid, Entity, FILLED, NULL, clear
 
