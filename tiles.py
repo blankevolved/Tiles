@@ -25,10 +25,35 @@ finally:
     from deprecation import deprecated
 
 
+# Version
+VERSION = 1.2
+
+# Colors
+F_RESET     = Fore.RESET
+F_WHITE     = Fore.WHITE
+F_BLACK     = Fore.BLACK
+F_RED       = Fore.RED
+F_BLUE      = Fore.BLUE
+F_GREEN     = Fore.GREEN
+F_YELLOW    = Fore.YELLOW
+F_CYAN      = Fore.CYAN
+F_MAGENTA   = Fore.MAGENTA
+
+B_RESET = Back.RESET
+
+# Game loop
+START_TIME = time.time()
+
+# the delay before the screen refreshes 
+# when Entity.move_loop is called.
+tick_speed = .3 
+
+
+
+
 class Error:
     def create(message):
         return f"{F_RED}ERROR: {message}{F_RESET}"
-
 
 class Tile:
     list = {}
@@ -38,7 +63,6 @@ class Tile:
         Tile.list[name] = icon
     def __repr__(self) -> str:
         return self.icon
-
 
 class Grid:
     def __init__(self, x:int, y:int, background_tile:Tile):
@@ -91,27 +115,45 @@ class Grid:
 
         return output
     
-    def change_tile(self, x:int, y:int, new_tile_name:str):
+    def draw_tile(self, x:int, y:int, tile_name:str, color:str=F_RESET):
         try:
-            self.cords[x, y]['tile'] = new_tile_name
+            self.cords[x, y]['tile'] = tile_name
+            self.cords[x, y]['fore_color'] = color
+        except KeyError:
+            print(Error.create(f"The ({x}, {y}) pair doesn't exist"))
+
+    def draw_entity(self, x:int, y:int, entity):
+        try:
+            self.cords[x, y]['tile'] = entity.tile
+            self.cords[x, y]['fore_color'] = entity.fore_color
+            entity.x = x
+            entity.y = y
         except KeyError:
             print(Error.create(f"The ({x}, {y}) pair doesn't exist"))
 
 class Entity:
-    def __init__(self, tile:Tile, grid:Grid, x:int, y:int):
+    def __init__(self, tile:Tile, grid:Grid, fore_color:str):
         self.tile = tile
         self.grid = grid
-        self.x = x
-        self.y = y
-        grid.cords[x, y]['tile'] = tile
+        self.fore_color = fore_color
     def move(self, right=False, left=False, up=False, down=False):
         if right == True:
             plus_or_minus = '+'
             opp_plus_or_minus = '-'
             try:
+                if self.grid.cords[eval(f'{self.x} + {plus_or_minus} + 1'), self.y]['tile'] != self.grid.background_tile:
+                    raise
+                
+                self.grid.cords[self.x, self.y]['fore_color'] = F_RESET
+
                 self.grid.cords[eval(f'{self.x} + {plus_or_minus} + 1'), self.y]['tile'] = self.tile
-                self.x = self.x + 1
+
+                self.x = eval(f'{self.x} + {plus_or_minus} + 1')
+
                 self.grid.cords[eval(f'{self.x} + {opp_plus_or_minus} + 1'), self.y]['tile'] = self.grid.background_tile
+
+                self.grid.cords[self.x, self.y]['fore_color'] = self.fore_color
+
             except:
                 print(MOVE_ERROR)
 
@@ -119,9 +161,19 @@ class Entity:
             plus_or_minus = '-'
             opp_plus_or_minus = '+'
             try:
+                if self.grid.cords[eval(f'{self.x} + {plus_or_minus} + 1'), self.y]['tile'] != self.grid.background_tile:
+                    raise
+
+                self.grid.cords[self.x, self.y]['fore_color'] = F_RESET
+
                 self.grid.cords[eval(f'{self.x} + {plus_or_minus} + 1'), self.y]['tile'] = self.tile
+                
                 self.x = eval(f'{self.x} + {plus_or_minus} + 1')
+                
                 self.grid.cords[eval(f'{self.x} + {opp_plus_or_minus} + 1'), self.y]['tile'] = self.grid.background_tile
+            
+                self.grid.cords[self.x, self.y]['fore_color'] = self.fore_color
+            
             except:
                 print(MOVE_ERROR)
         
@@ -129,9 +181,19 @@ class Entity:
             plus_or_minus = '-'
             opp_plus_or_minus = '+'
             try:
+                if self.grid.cords[self.x, eval(f'{self.y} + {plus_or_minus} + 1')]['tile'] != self.grid.background_tile:
+                    raise
+
+                self.grid.cords[self.x, self.y]['fore_color'] = F_RESET
+
                 self.grid.cords[self.x, eval(f'{self.y} + {plus_or_minus} + 1')]['tile'] = self.tile
+                
                 self.y = eval(f'{self.y} + {plus_or_minus} + 1')
+                
                 self.grid.cords[self.x, eval(f'{self.y} + {opp_plus_or_minus} + 1')]['tile'] = self.grid.background_tile
+            
+                self.grid.cords[self.x, self.y]['fore_color'] = self.fore_color
+            
             except:
                 print(MOVE_ERROR)
         
@@ -139,9 +201,19 @@ class Entity:
             plus_or_minus = '+'
             opp_plus_or_minus = '-'
             try:
+                if self.grid.cords[self.x, eval(f'{self.y} + {plus_or_minus} + 1')]['tile'] != self.grid.background_tile:
+                    raise
+                
+                self.grid.cords[self.x, self.y]['fore_color'] = F_RESET
+
                 self.grid.cords[self.x, eval(f'{self.y} + {plus_or_minus} + 1')]['tile'] = self.tile
+                
                 self.y = eval(f'{self.y} + {plus_or_minus} + 1')
+                
                 self.grid.cords[self.x, eval(f'{self.y} + {opp_plus_or_minus} + 1')]['tile'] = self.grid.background_tile
+
+                self.grid.cords[self.x, self.y]['fore_color'] = self.fore_color
+
             except:
                 print(MOVE_ERROR)
 
@@ -157,17 +229,6 @@ class Entity:
             
         time.sleep(tick_speed - ((time.time() - START_TIME) % tick_speed))
 
-        
-        
-# Version
-VERSION = 1.1
-
-# Colors
-F_RESET = Fore.RESET
-F_RED = Fore.RED
-
-B_RESET = Back.RESET
-
 # Error messages (You wont need)
 DEP_ERROR = Error.create('This function is depreciated and will be removed in a later version')
 MOVE_ERROR = Error.create('You cannot move that way')
@@ -175,10 +236,3 @@ MOVE_ERROR = Error.create('You cannot move that way')
 # Tiles
 NULL = Tile('null', '◻')
 FILLED = Tile('filled', '◼')
-
-# Game loop
-START_TIME = time.time()
-# the delay before the screen refreshes 
-# when Entity.move_loop is called.
-tick_speed = .3 
-

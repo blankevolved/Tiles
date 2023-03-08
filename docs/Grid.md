@@ -44,17 +44,52 @@ Output
 4 ◻ ◻ ◻ ◻ ◻
 ```
 
-## change_tile
-You can use this method to change a specified tile
+## draw_tile
+You can use this method to draw a tile to a pos on the grid
 ```py
 # import Grid, NULL and FILLED tiles
-from tiles import Grid, NULL, FILLED
+from tiles import Grid, NULL, FILLED, F_RESET
 
 # make new grid
 my_grid = Grid(10, 10, NULL)
 
 # change tile
-my_grid.change_tile(0, 0, FILLED)
+my_grid.draw_tile(0, 0, FILLED, fore_color=F_RESET)
+
+# print out
+print(my_grid.create())
+
+```
+
+Output:
+```py
+   0  1 2  3 4  5 6  7 8  9  
+0  ◼ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+1  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+2  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+3  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+4  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+5  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+6  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+7  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+8  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+9  ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻ ◻  
+```
+
+## draw_entity
+You can use this method to draw an entity to the grid
+```py
+# import Grid, NULL and FILLED tiles
+from tiles import Grid, NULL, FILLED, F_RESET, Entity
+
+# make new grid
+my_grid = Grid(10, 10, NULL)
+
+# new entity
+my_entity = Entity(tile=FILLED, grid=my_grid, fore_color=F_RESET)
+
+# change tile
+my_grid.draw_entity(0, 0, entity=my_entity)
 
 # print out
 print(my_grid.create())

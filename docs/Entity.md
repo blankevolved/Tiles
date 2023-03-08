@@ -4,13 +4,13 @@
 Define a new entity like this
 ```py
 # imports
-from tiles import Grid, Entity, FILLED, NULL
+from tiles import Grid, Entity, FILLED, NULL, F_RED
 
 # define grid
 my_grid = Grid(10, 10, NULL)
 
 # define entity
-my_entity = Entity(tile=FILLED, grid=my_grid, x=0, y= 0)
+my_entity = Entity(tile=FILLED, grid=my_grid, fore_color=F_RED)
 ```
 
 ## move
@@ -23,7 +23,7 @@ from tiles import Grid, Entity, FILLED, NULL
 my_grid = Grid(10, 10, NULL)
 
 # define entity
-my_entity = Entity(tile=FILLED, grid=my_grid, x=0, y= 0)
+my_entity = Entity(tile=FILLED, grid=my_grid)
 
 my_entity.move(right=True)
 
@@ -55,7 +55,7 @@ from tiles import Grid, Entity, FILLED, NULL, clear
 grid = Grid(10, 10, NULL)
 
 # define player
-player = Entity(FILLED, grid, 0, 0)
+player = Entity(FILLED, grid)
 
 while True:
     # clear screen

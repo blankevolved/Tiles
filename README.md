@@ -11,10 +11,10 @@ This module is used for creating tile sets where you can place custom tiles.
 - ✅ Creating custom grids of any size
 - ✅ User made tiles
 - ✅ Entity tiles being moveable
-- ❌ Color changing of tiles
+- ✅ Color changing of tiles
 - ❌ NPC Tiles that can move by themselves
 - ❌ Saving tile sets to a file
-- ❌ Entity collisions with other tiles
+- ✅ Entity collisions with other tiles
 
 
 
